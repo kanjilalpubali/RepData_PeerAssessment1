@@ -1,15 +1,10 @@
----
-title: "Reproducible Research: Peer Assessment 1"
-output: 
-  html_document:
-    keep_md: true
----
+# Reproducible Research: Peer Assessment 1
 
 
 ## Loading and preprocessing the data
 
-```{r}
 
+```r
 #Set Working Directory
 setwd("F:/PK/Coursera - Data Science Specialization/Course 5 - Reproducible Research/Week 2/RepData_PeerAssessment1")
 
@@ -21,12 +16,12 @@ activity <- read.csv("activity.csv",stringsAsFactors = FALSE)
 activity$steps <- as.numeric(activity$steps) #Transform Steps into Numeric
 activity$date <- as.Date(activity$date) #Transform Date into Date
 activity$interval <- as.numeric(activity$interval) #Transform Interval into Numeric
-
 ```
 
 ## What is mean total number of steps taken per day?
 
-```{r}
+
+```r
 #Total Steps by Date
 #Instruction was that we MAY ignore Missing values
 #Missings have not been considered here
@@ -54,23 +49,35 @@ legend(x="topright",
        col=c("green","blue"), 
        bty="n", 
        lwd=3)
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-2-1.png) 
 
 ###Mean and Median of Tot Steps
 
-```{r}
+
+```r
 #Mean
 mean_steps_byday
+```
 
+```
+## [1] 9354.23
+```
+
+```r
 #Median
 median_steps_byday
+```
 
+```
+## [1] 10395
 ```
 
 ## What is the average daily activity pattern?
 
-```{r}
+
+```r
 #Calculate Avg Steps by Interval
 mean_steps_byInt <- tapply(activity$steps,activity$interval, mean, na.rm=TRUE) #Mean of Steps by Interval
 
@@ -85,23 +92,35 @@ plot(names(mean_steps_byInt),
      col = "blue",
      bg = "transparent"
      )
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-4-1.png) 
 
 ###Interval with Max Number of Steps
 
-```{r}
+
+```r
 #Interval with Max Number of Steps
 names(which.max(mean_steps_byInt))
+```
 
+```
+## [1] "835"
 ```
 
 ## Imputing missing values
 
-```{r}
+
+```r
 #Number of Observations with NA Cases
 sum(is.na(activity))
+```
 
+```
+## [1] 2304
+```
+
+```r
 #Mean of Steps by Interval
 mean_steps_byInt <- tapply(activity$steps,activity$interval, mean, na.rm=TRUE)
 
@@ -133,15 +152,17 @@ legend(x="topright",
        col=c("green","blue"), 
        bty="n", 
        lwd=3)
+```
 
-```       
+![](PA1_template_files/figure-html/unnamed-chunk-6-1.png) 
        
 ###Mean and Median are higher than  before. Mean and Median coincide after Missing Imputation. 
 
 
 ## Are there differences in activity patterns between weekdays and weekends?
 
-```{r}
+
+```r
 #New Variable based on Day of Week: Weekday or Weekend
 
 activitynew$WDcatg <- factor(weekdays(activitynew$date) %in% c("Saturday","Sunday"), labels=c("Week Days","Weekends"), ordered=FALSE)
@@ -153,7 +174,8 @@ library(ggplot2)
 g <- ggplot(data=avgstep_byint_bywkdctg,
             aes(x=interval,y=x)) + geom_line() + facet_grid(WDcatg~.) + labs(x='Interval',y='Avg Steps',title= 'by Weekday/Weeken - Avg Steps by Interval')
 g
-
 ```
+
+![](PA1_template_files/figure-html/unnamed-chunk-7-1.png) 
 
 ###Morning activity is higher during Weekdays but overall activity is higher during Weekends.
